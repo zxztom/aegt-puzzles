@@ -3,478 +3,701 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AEGT 数列谜题集。展开题目查看答案和逐步解法，也可以继续挑战待解题。">
-  <meta name="theme-color" content="#f5f6ef">
-  <title>AEGT 数列谜题集</title>
+  <title>AEGT 数列题目与解析</title>
   <style>
     :root {
       color-scheme: light;
-      --paper: #f5f6ef;
-      --card: #fffefa;
-      --ink: #182d25;
-      --muted: #55655d;
-      --forest: #12372d;
-      --line: #dce2d7;
-      --lime: #ddf991;
-      --mono: "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+      font-family: system-ui, "Microsoft YaHei", "PingFang SC", sans-serif;
+      --line: #d6d6d6;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font: 16px/1.65 system-ui, "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: #fff;
+      color: #111;
+      line-height: 1.65;
     }
-    a { color: inherit; text-decoration: none; }
-    a:focus-visible, summary:focus-visible { outline: 2px solid #327958; outline-offset: 5px; }
-    h1, h2, p { margin: 0; }
-    code, .mono { font-family: var(--mono); }
-    code { overflow-wrap: anywhere; }
-    .wrap { width: min(1120px, 100% - 64px); margin-inline: auto; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; }
-    .brand, .repo-link { display: inline-flex; align-items: center; gap: 10px; font-size: .875rem; font-weight: 650; }
-    .brand { letter-spacing: .045em; }
-    .mark {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--forest);
-      color: var(--lime);
-      font: 700 1.15rem var(--mono);
-    }
-    .repo-link { color: var(--muted); padding-block: 5px; }
-    .repo-link:hover, .footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
-    .hero {
-      display: grid;
-      grid-template-columns: 1.36fr 1fr;
-      border-radius: 24px;
-      overflow: hidden;
-      background: var(--forest);
-      color: white;
-    }
-    .hero-copy { padding: clamp(32px, 5.5vw, 66px); }
-    .eyebrow { color: var(--lime); font: 700 .78rem var(--mono); letter-spacing: .16em; }
-    h1 { font-size: clamp(2.6rem, 5.1vw, 4.3rem); line-height: 1.18; font-weight: 820; letter-spacing: -.045em; margin-block: 12px 16px; }
-    .hero-copy p:not(.eyebrow) { max-width: 30em; color: #d8e7dc; }
-    .hero-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; margin-top: 28px; }
-    .hero-nav a { display: inline-flex; gap: 12px; align-items: center; font-size: .875rem; font-weight: 700; }
-    .hero-nav a:focus-visible { outline-color: var(--lime); }
-    .hero-nav .button { padding: 9px 15px; border-radius: 8px; background: var(--lime); color: var(--ink); }
-    .hero-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-    .hero-example {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 18px;
-      padding: clamp(24px, 4vw, 52px);
-      color: var(--forest);
-      background-color: #e8f0db;
-      background-image: radial-gradient(#b8c9ab 1px, transparent 1px);
-      background-size: 16px 16px;
-    }
-    .example-link { width: fit-content; font-size: .82rem; font-weight: 750; }
-    .example-link:hover { text-decoration: underline; text-underline-offset: 4px; }
-    .tiles {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 7px;
-    }
-    .tiles span {
-      display: grid;
-      place-items: center;
-      min-height: 45px;
-      aspect-ratio: 1 / 1.11;
-      background: var(--card);
-      border: 1px solid #c6d3bc;
-      border-radius: 9px;
-      font: 700 clamp(1.1rem, 2.4vw, 1.75rem) var(--mono);
-    }
-    .tiles span:nth-last-child(2) { background: #d5edba; }
-    .tiles span:last-child { background: var(--forest); color: var(--lime); border-color: var(--forest); }
-    .hero-example small { font-size: .79rem; font-weight: 600; }
-    section { margin-top: 53px; scroll-margin-top: 18px; }
-    .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 16px; margin-bottom: 16px; }
-    h2 { font-size: clamp(1.55rem, 3vw, 2rem); line-height: 1.4; letter-spacing: -.03em; }
-    .section-head p { color: var(--muted); font-size: .86rem; }
-    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; align-items: start; }
-    .puzzle { background: var(--card); border: 1px solid var(--line); border-radius: 13px; min-width: 0; scroll-margin-top: 16px; }
-    .puzzle:target { outline: 2px solid #327958; outline-offset: 3px; }
-    .puzzle summary { display: block; padding: 17px 19px 18px; cursor: pointer; border-radius: 13px; }
-    .puzzle summary::-webkit-details-marker { display: none; }
-    .puzzle summary:hover { background: #f4f8ec; }
-    .puzzle[open] summary { border-radius: 13px 13px 0 0; }
-    .card-head { display: flex; gap: 10px; align-items: center; margin-bottom: 9px; }
-    .number { color: #436654; font: 700 .76rem var(--mono); }
-    .card-title { font-size: .91rem; font-weight: 750; }
-    .chevron { margin-left: auto; display: grid; place-items: center; flex: 0 0 25px; height: 25px; border-radius: 50%; background: #edf2e6; }
-    .chevron::after { content: ""; width: 7px; height: 7px; border: solid var(--forest); border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); }
-    details[open] .chevron::after { transform: translateY(2px) rotate(225deg); }
-    .sequence { display: block; font-size: .89rem; font-weight: 650; line-height: 1.75; }
-    .blank { color: #356347; border-radius: 4px; background: #e6f1d9; padding-inline: .22em; }
-    .solution { padding: 16px 19px 20px; border-top: 1px solid var(--line); font-size: .92rem; }
-    .solution p + p, .solution ul + p { margin-top: 9px; }
-    .solution ul { margin: 10px 0; padding-left: 1.3em; }
-    .solution li + li { margin-top: 4px; }
-    .answer { color: #214e39; font-weight: 750; }
-    .answer code { background: #e6f1d9; border-radius: 5px; padding: 3px 6px; }
-    .note { color: #6c5125; }
-    .static { padding: 17px 19px 18px; }
-    .static p { margin-top: 9px; color: var(--muted); font-size: .86rem; }
-    .footer { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; margin-top: 52px; padding-block: 22px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
 
-    @media (max-width: 760px) {
-      .wrap { width: calc(100% - 32px); }
-      .hero { grid-template-columns: 1fr; border-radius: 18px; }
-      .hero-copy { padding: 30px 24px; }
-      .hero-example { padding: 18px 24px 20px; gap: 9px; }
-      .tiles { max-width: 330px; }
-      .tiles span { aspect-ratio: 1 / .9; }
-      section { margin-top: 36px; }
+    main {
+      width: min(calc(100% - 40px), 920px);
+      margin: 38px auto 56px;
     }
-    @media (max-width: 580px) {
-      .cards { grid-template-columns: 1fr; }
+
+    section + section { margin-top: 35px; }
+    h2 { margin: 0 0 10px; font-size: 1.25rem; }
+    code { font-family: "Cascadia Mono", Consolas, "Liberation Mono", monospace; }
+
+    .puzzle {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: .5rem;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .puzzle:last-child { border-bottom: 1px solid var(--line); }
+    .number { font-weight: 650; font-variant-numeric: tabular-nums; }
+    .sequence, .explanation { overflow-wrap: anywhere; }
+    .sequence { display: block; font-size: 1rem; }
+
+    .reveal {
+      display: inline-grid;
+      place-items: center;
+      min-width: 1.5em;
+      min-height: 24px;
+      padding: 0 .2em;
+      border: 0;
+      border-bottom: 1px dotted currentColor;
+      background: none;
+      color: inherit;
+      font: inherit;
+      line-height: 1.25;
+      cursor: pointer;
+    }
+
+    .reveal .value, .reveal::after { grid-area: 1 / 1; }
+
+    .reveal[aria-expanded="false"] .value {
+      filter: blur(.3em);
+      opacity: .35;
+      user-select: none;
+    }
+
+    .reveal[aria-expanded="false"]::after { content: "?"; }
+
+    .analysis { margin-top: 3px; font-size: .9rem; }
+    .analysis summary { width: fit-content; padding: 2px 4px 2px 0; cursor: pointer; }
+    .analysis summary:hover { text-decoration: underline; }
+    .explanation { margin: 8px 0 2px; }
+    .explanation > * { margin-block: 0 7px; }
+    .explanation > :last-child { margin-bottom: 0; }
+    .explanation ul { padding-left: 1.25em; }
+    .answer { font-weight: 650; }
+    a { color: inherit; text-underline-offset: 2px; }
+    :focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+
+    @media (max-width: 480px) {
+      main { width: calc(100% - 28px); margin-top: 22px; }
+      .puzzle { grid-template-columns: 1.65rem minmax(0, 1fr); gap: .35rem; }
+      .sequence { font-size: .925rem; }
     }
   </style>
 </head>
-<body id="top">
-  <header class="topbar wrap">
-    <a class="brand" href="#top"><span class="mark" aria-hidden="true">∴</span> AEGT</a>
-    <a class="repo-link" href="https://github.com/zxztom/aegt-puzzles">GitHub 源码 <span aria-hidden="true">↗</span></a>
-  </header>
-  <main class="wrap">
-    <div class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">AEGT</p>
-        <h1>数列谜题集</h1>
-        <p>先找出问号里的数，再展开题目看答案和验算过程。</p>
-        <nav class="hero-nav" aria-label="题目分区">
-          <a class="button" href="#solutions">看题目与解析 <span aria-hidden="true">↓</span></a>
-          <a href="#extras">看补充题 <span aria-hidden="true">↘</span></a>
-        </nav>
-      </div>
-      <div class="hero-example">
-        <a class="example-link" href="#q7">第 7 题的奇数位 <span aria-hidden="true">↘</span></a>
-        <div class="tiles" aria-label="0、1、1、2、3、5">
-          <span>0</span><span>1</span><span>1</span><span>2</span><span>3</span><span>5</span>
-        </div>
-        <small>前两项相加，就得到后一项。</small>
-      </div>
-    </div>
-
+<body>
+  <main>
     <section id="solutions" aria-labelledby="solutions-title">
-      <div class="section-head">
-        <h2 id="solutions-title">题目与解析</h2>
-        <p>反转是倒过来写，拼接是挨着写。</p>
-      </div>
-      <div class="cards">
-        <details class="puzzle" id="q1">
-          <summary>
-            <span class="card-head"><span class="number">01</span><span class="card-title">五位数的四则运算</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">88511, 16351, <span class="blank">?</span>, 10251</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>73155</code></p>
-            <p>把五位数写成 <code>abcde</code>，依次算 <code>a+b、b−c、c×d、d÷e</code>，再把结果挨着写。</p>
-            <ul>
-              <li><code>88511 → 16 | 3 | 5 | 1 → 16351</code></li>
-              <li><code>16351 → 7 | 3 | 15 | 5 → 73155</code></li>
-              <li><code>73155 → 10 | 2 | 5 | 1 → 10251</code></li>
-            </ul>
-          </div>
-        </details>
+      <h2 id="solutions-title">已解</h2>
+      <article class="puzzle" id="q1">
+        <span class="number">1.</span>
+        <div>
+          <code class="sequence">
+            88511,
+            16351,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">73155</span>
+            </button>,
+            10251
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>73155</code></p>
+              <p>把五位数写成 <code>abcde</code>，依次算 <code>a+b、b−c、c×d、d÷e</code>，再把结果挨着写。</p>
+              <ul>
+                <li><code>88511 → 16 | 3 | 5 | 1 → 16351</code></li>
+                <li><code>16351 → 7 | 3 | 15 | 5 → 73155</code></li>
+                <li><code>73155 → 10 | 2 | 5 | 1 → 10251</code></li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q2">
-          <summary>
-            <span class="card-head"><span class="number">02</span><span class="card-title">倒着写，再隔项看</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">94, 36, 82, <span class="blank">?</span>, 7, 12</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>24</code></p>
-            <p>把每项倒过来，得到 <code>49, 63, 28, ?, 7, 21</code>。奇数位是 <code>49 → 28 → 7</code>，偶数位是 <code>63 → 42 → 21</code>，两列都每次减 21。</p>
-            <p>空格在偶数位，算得 42，倒过来就是 24。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q2">
+        <span class="number">2.</span>
+        <div>
+          <code class="sequence">
+            94,
+            36,
+            82,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">24</span>
+            </button>,
+            7,
+            12
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>24</code></p>
+              <p>把每项倒过来，得到 <code>49, 63, 28, ?, 7, 21</code>。奇数位是 <code>49 → 28 → 7</code>，偶数位是 <code>63 → 42 → 21</code>，两列都每次减 21。</p>
+              <p>空格在偶数位，算得 42，倒过来就是 24。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q3">
-          <summary>
-            <span class="card-head"><span class="number">03</span><span class="card-title">翻倍与减三</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">8, <span class="blank">?</span>, <span class="blank">?</span>, 31, 23, 92, 46, 16</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>5</code>、<code>61</code></p>
-            <p>在倒过来的数上看，奇数位每次翻倍，得到 <code>8、16、32、64</code>。每个偶数位比紧挨着它前面的数小 3，于是四对是 <code>(8, 5)、(16, 13)、(32, 29)、(64, 61)</code>。</p>
-            <p>每个数再倒回来，得到 <code>8, 5, 61, 31, 23, 92, 46, 16</code>。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q3">
+        <span class="number">3.</span>
+        <div>
+          <code class="sequence">
+            8,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">5</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">61</span>
+            </button>,
+            31,
+            23,
+            92,
+            46,
+            16
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>5</code>、<code>61</code></p>
+              <p>在倒过来的数上看，奇数位每次翻倍，得到 <code>8、16、32、64</code>。每个偶数位比紧挨着它前面的数小 3，于是四对是 <code>(8, 5)、(16, 13)、(32, 29)、(64, 61)</code>。</p>
+              <p>每个数再倒回来，得到 <code>8, 5, 61, 31, 23, 92, 46, 16</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q4">
-          <summary>
-            <span class="card-head"><span class="number">04</span><span class="card-title">每次少减三</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">7281981, 9141761, <span class="blank">?</span>, 2160321, <span class="blank">?</span></code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>4101541</code>、<code>3120101</code></p>
-            <p>前两项倒过来是 <code>1891827、1671419</code>，前项减后项得 <code>220408</code>。之后每一步减去的数少 3，依次减 <code>220405、220402、220399</code>。</p>
-            <p>依次得到 <code>1891827 → 1671419 → 1451014 → 1230612 → 1010213</code>。第三、第五项分别倒过来，就得到两个空。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q4">
+        <span class="number">4.</span>
+        <div>
+          <code class="sequence">
+            7281981,
+            9141761,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">4101541</span>
+            </button>,
+            2160321,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">3120101</span>
+            </button>
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>4101541</code>、<code>3120101</code></p>
+              <p>前两项倒过来是 <code>1891827、1671419</code>，前项减后项得 <code>220408</code>。之后每一步减去的数少 3，依次减 <code>220405、220402、220399</code>。</p>
+              <p>依次得到 <code>1891827 → 1671419 → 1451014 → 1230612 → 1010213</code>。第三、第五项分别倒过来，就得到两个空。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q5">
-          <summary>
-            <span class="card-head"><span class="number">05</span><span class="card-title">字母里的等差数列</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">BBCEAD, <span class="blank">?</span>, BDBGBF, <span class="blank">?</span>, BFAICH</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>BCCAAJ</code>、<code>BEBCCB</code></p>
-            <p>按 <code>A=0、B=1、…、J=9</code> 把字母逐位换成数字。<code>BBCEAD</code> 是 <code>112403</code>，每一步加 <code>9606</code>。</p>
-            <p><code>112403 → 122009 → 131615 → 141221 → 150827</code></p>
-            <p>把第二项 <code>122009</code> 和第四项 <code>141221</code> 逐位换回字母即可。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q6">
+        <span class="number">6.</span>
+        <div>
+          <code class="sequence">
+            BBCEAD,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">BCCAAJ</span>
+            </button>,
+            BDBGBF,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">BEBCCB</span>
+            </button>,
+            BFAICH
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>BCCAAJ</code>、<code>BEBCCB</code></p>
+              <p>按 <code>A=0、B=1、…、J=9</code> 把字母逐位换成数字。<code>BBCEAD</code> 是 <code>112403</code>，每一步加 <code>9606</code>。</p>
+              <p><code>112403 → 122009 → 131615 → 141221 → 150827</code></p>
+              <p>把第二项 <code>122009</code> 和第四项 <code>141221</code> 逐位换回字母即可。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q6">
-          <summary>
-            <span class="card-head"><span class="number">06</span><span class="card-title">围绕 P 向两边扩展</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence"><span class="blank">?</span>, NPR, <span class="blank">?</span>, JLNPRTV, <span class="blank">?</span>, FHJLNPRTVXZ</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>P</code>、<code>LNPRT</code>、<code>HJLNPRTVX</code></p>
-            <p>从 <code>P</code> 开始，每次在左右两头各添一个字母，沿字母表隔一位取一个。第一次添 <code>N</code> 和 <code>R</code>，第二次添 <code>L</code> 和 <code>T</code>。</p>
-            <p><code>P → NPR → LNPRT → JLNPRTV → HJLNPRTVX → FHJLNPRTVXZ</code></p>
-          </div>
-        </details>
+      <article class="puzzle" id="q7">
+        <span class="number">7.</span>
+        <div>
+          <code class="sequence">
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">P</span>
+            </button>,
+            NPR,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">LNPRT</span>
+            </button>,
+            JLNPRTV,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">HJLNPRTVX</span>
+            </button>,
+            FHJLNPRTVXZ
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>P</code>、<code>LNPRT</code>、<code>HJLNPRTVX</code></p>
+              <p>从 <code>P</code> 开始，每次在左右两头各添一个字母，沿字母表隔一位取一个。第一次添 <code>N</code> 和 <code>R</code>，第二次添 <code>L</code> 和 <code>T</code>。</p>
+              <p><code>P → NPR → LNPRT → JLNPRTV → HJLNPRTVX → FHJLNPRTVXZ</code></p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q7">
-          <summary>
-            <span class="card-head"><span class="number">07</span><span class="card-title">两列数交错排列</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">0, 5, 1, <span class="blank">?</span>, <span class="blank">?</span>, 3, 2, <span class="blank">?</span>, <span class="blank">?</span>, 1, 5, 0, 8</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>4</code>、<code>1</code>、<code>2</code>、<code>3</code></p>
-            <ul>
-              <li>奇数位 <code>0, 1, 1, 2, 3, 5, 8</code>，从第三个数开始，每项是前两项之和。</li>
-              <li>偶数位 <code>5, 4, 3, 2, 1, 0</code>，每次减 1。</li>
-            </ul>
-            <p>交错放回原位，得到 <code>0, 5, 1, 4, 1, 3, 2, 2, 3, 1, 5, 0, 8</code>。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q8">
+        <span class="number">8.</span>
+        <div>
+          <code class="sequence">
+            0,
+            5,
+            1,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">4</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">1</span>
+            </button>,
+            3,
+            2,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">2</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="4" aria-label="显示第 4 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">3</span>
+            </button>,
+            1,
+            5,
+            0,
+            8
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>4</code>、<code>1</code>、<code>2</code>、<code>3</code></p>
+              <ul>
+                <li>奇数位 <code>0, 1, 1, 2, 3, 5, 8</code>，从第三个数开始，每项是前两项之和。</li>
+                <li>偶数位 <code>5, 4, 3, 2, 1, 0</code>，每次减 1。</li>
+              </ul>
+              <p>交错放回原位，得到 <code>0, 5, 1, 4, 1, 3, 2, 2, 3, 1, 5, 0, 8</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q8">
-          <summary>
-            <span class="card-head"><span class="number">08</span><span class="card-title">字母表两端配对</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">AFAE, KL, ZX, BBBC, <span class="blank">?</span>, R, AAAD, <span class="blank">?</span>, <span class="blank">?</span></code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>ED</code>、<code>PM</code>、<code>T</code></p>
-            <p>每三项一组。按 <code>A=1、…、Z=26</code> 换算。字母表两头配对，如 <code>A ↔ Z</code>、<code>B ↔ Y</code>，对应的序号加起来都是 27。</p>
-            <ul>
-              <li><code>AFAE</code> 变成 <code>1、6、1、5</code>。两两拼成 <code>16、15</code>，用 27 分别减去它们得 <code>11、12</code>，写成 <code>KL</code>。</li>
-              <li>把四位数字相加得 <code>13</code>，拆成 <code>1、3</code>，各自配对，写成 <code>ZX</code>。</li>
-            </ul>
-            <p>同理，<code>BBBC</code> 拼成 <code>22、23</code> 对应 <code>ED</code>，各位之和 9 对应 <code>R</code>。<code>AAAD</code> 拼成 <code>11、14</code> 对应 <code>PM</code>，各位之和 7 对应 <code>T</code>。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q9">
+        <span class="number">9.</span>
+        <div>
+          <code class="sequence">
+            AFAE,
+            KL,
+            ZX,
+            BBBC,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">ED</span>
+            </button>,
+            R,
+            AAAD,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">PM</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">T</span>
+            </button>
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>ED</code>、<code>PM</code>、<code>T</code></p>
+              <p>每三项一组。按 <code>A=1、…、Z=26</code> 换算。字母表两头配对，如 <code>A ↔ Z</code>、<code>B ↔ Y</code>，对应的序号加起来都是 27。</p>
+              <ul>
+                <li><code>AFAE</code> 变成 <code>1、6、1、5</code>。两两拼成 <code>16、15</code>，用 27 分别减去它们得 <code>11、12</code>，写成 <code>KL</code>。</li>
+                <li>把四位数字相加得 <code>13</code>，拆成 <code>1、3</code>，各自配对，写成 <code>ZX</code>。</li>
+              </ul>
+              <p>同理，<code>BBBC</code> 拼成 <code>22、23</code> 对应 <code>ED</code>，各位之和 9 对应 <code>R</code>。<code>AAAD</code> 拼成 <code>11、14</code> 对应 <code>PM</code>，各位之和 7 对应 <code>T</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q9">
-          <summary>
-            <span class="card-head"><span class="number">09</span><span class="card-title">每项拆成三块</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">810, 729, 539, <span class="blank">?</span>, <span class="blank">?</span>, 367, 379, <span class="blank">?</span>, <span class="blank">?</span>, 51013</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>248</code>、<code>256</code>、<code>4810</code>、<code>4912</code></p>
-            <p>取当前项的前两块 <code>a、b</code>，用 <code>|a−b|、b+1、a+b</code> 作为下一项的三块。比如 <code>5|3|9</code> 算出 <code>2|4|8</code>。</p>
-            <p><code>8|1|0 → 7|2|9 → 5|3|9 → 2|4|8 → 2|5|6 → 3|6|7 → 3|7|9 → 4|8|10 → 4|9|12 → 5|10|13</code></p>
-            <p>每块可以超过一位，所以 <code>4810</code> 要读成 <code>4|8|10</code>。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q10">
+        <span class="number">10.</span>
+        <div>
+          <code class="sequence">
+            810,
+            729,
+            539,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">248</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">256</span>
+            </button>,
+            367,
+            379,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">4810</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="4" aria-label="显示第 4 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">4912</span>
+            </button>,
+            51013
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>248</code>、<code>256</code>、<code>4810</code>、<code>4912</code></p>
+              <p>取当前项的前两块 <code>a、b</code>，用 <code>|a−b|、b+1、a+b</code> 作为下一项的三块。比如 <code>5|3|9</code> 算出 <code>2|4|8</code>。</p>
+              <p><code>8|1|0 → 7|2|9 → 5|3|9 → 2|4|8 → 2|5|6 → 3|6|7 → 3|7|9 → 4|8|10 → 4|9|12 → 5|10|13</code></p>
+              <p>每块可以超过一位，所以 <code>4810</code> 要读成 <code>4|8|10</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q10">
-          <summary>
-            <span class="card-head"><span class="number">10</span><span class="card-title">从右向左读幂次</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence"><span class="blank">?</span>, <span class="blank">?</span>, <span class="blank">?</span>, 61, 2, 4, 3, 1, 3, 1, <span class="blank">?</span>, 2</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>521</code>、<code>3</code>、<code>5</code>、<code>0</code></p>
-            <p>整串从右往左读，每项里的数字也倒过来。每三个数一组，依次是底数、指数、结果。</p>
-            <p><code>2<sup>0</sup>=1</code>，<code>3<sup>1</sup>=3</code>，<code>4<sup>2</sup>=16</code>，<code>5<sup>3</sup>=125</code>。换回题目的方向，16 写成 61，125 写成 521。</p>
-            <p><code>521, 3, 5, 61, 2, 4, 3, 1, 3, 1, 0, 2</code></p>
-          </div>
-        </details>
+      <article class="puzzle" id="q11">
+        <span class="number">11.</span>
+        <div>
+          <code class="sequence">
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">521</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">3</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">5</span>
+            </button>,
+            61,
+            2,
+            4,
+            3,
+            1,
+            3,
+            1,
+            <button class="reveal" type="button" data-blank="4" aria-label="显示第 4 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">0</span>
+            </button>,
+            2
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>521</code>、<code>3</code>、<code>5</code>、<code>0</code></p>
+              <p>整串从右往左读，每项里的数字也倒过来。每三个数一组，依次是底数、指数、结果。</p>
+              <p><code>2<sup>0</sup>=1</code>，<code>3<sup>1</sup>=3</code>，<code>4<sup>2</sup>=16</code>，<code>5<sup>3</sup>=125</code>。换回题目的方向，16 写成 61，125 写成 521。</p>
+              <p><code>521, 3, 5, 61, 2, 4, 3, 1, 3, 1, 0, 2</code></p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q11">
-          <summary>
-            <span class="card-head"><span class="number">11</span><span class="card-title">序号平方，再换回字母</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">Z, 2, FGF, Y, 2, FBE, X, <span class="blank">?</span>, <span class="blank">?</span></code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>2</code>、<code>EGF</code></p>
-            <p>每三项一组。第一项取字母表序号，第二项表示平方，第三项把结果逐位换回字母。数字 1 对应 A，2 对应 B，依此类推。</p>
-            <ul>
-              <li><code>Z → 26<sup>2</sup>=676 → FGF</code></li>
-              <li><code>Y → 25<sup>2</sup>=625 → FBE</code></li>
-              <li><code>X → 24<sup>2</sup>=576 → EGF</code></li>
-            </ul>
-          </div>
-        </details>
+      <article class="puzzle" id="q12">
+        <span class="number">12.</span>
+        <div>
+          <code class="sequence">
+            Z,
+            2,
+            FGF,
+            Y,
+            2,
+            FBE,
+            X,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">2</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">EGF</span>
+            </button>
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>2</code>、<code>EGF</code></p>
+              <p>每三项一组。第一项取字母表序号，第二项表示平方，第三项把结果逐位换回字母。数字 1 对应 A，2 对应 B，依此类推。</p>
+              <ul>
+                <li><code>Z → 26<sup>2</sup>=676 → FGF</code></li>
+                <li><code>Y → 25<sup>2</sup>=625 → FBE</code></li>
+                <li><code>X → 24<sup>2</sup>=576 → EGF</code></li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q12">
-          <summary>
-            <span class="card-head"><span class="number">12</span><span class="card-title">两项一组，对应相加</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">4.180.6, 72.55.1, <span class="blank">?</span>, 54.73.3, <span class="blank">?</span>, 36.91.5</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>22.162.4</code>、<code>40.144.2</code></p>
-            <p>第 1、2 项一组，第 3、4 项一组，第 5、6 项一组。每项按点号分成三段，同一组对应相加都是 <code>76、235、7</code>。</p>
-            <ul>
-              <li>用 <code>76−54、235−73、7−3</code> 得到第 3 项 <code>22.162.4</code>。</li>
-              <li>用 <code>76−36、235−91、7−5</code> 得到第 5 项 <code>40.144.2</code>。</li>
-            </ul>
-          </div>
-        </details>
+      <article class="puzzle" id="q13">
+        <span class="number">13.</span>
+        <div>
+          <code class="sequence">
+            D,
+            A,
+            B,
+            F,
+            B,
+            F,
+            H,
+            C,
+            EJ,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">J</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">D</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">HCJ</span>
+            </button>
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>J</code>、<code>D</code>、<code>HCJ</code></p>
+              <p>用 <code>A=0、B=1、…、J=9</code> 逐位换算，每三项一组，依次是底数、指数和结果。</p>
+              <ul>
+                <li><code>D, A, B</code> 表示 <code>3<sup>0</sup>=1</code>。</li>
+                <li><code>F, B, F</code> 表示 <code>5<sup>1</sup>=5</code>。</li>
+                <li><code>H, C, EJ</code> 表示 <code>7<sup>2</sup>=49</code>。</li>
+                <li>底数每次加 2，指数每次加 1，所以下一组是 <code>9<sup>3</sup>=729</code>，写成 <code>J, D, HCJ</code>。</li>
+              </ul>
+              <p>第二组中间原抄作 <code>A</code>，应为 <code>B</code>。第三组的 <code>C</code> 对应指数 2，也就是 <code>7<sup>2</sup>=49</code>。<a href="https://iq-tests-for-the-high-range.com/others/slse.html">核对原版数字题第 1 题</a></p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q13">
-          <summary>
-            <span class="card-head"><span class="number">13</span><span class="card-title">相邻数字相乘</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">11446174671, <span class="blank">?</span>, 4462184224416161861841, 42…82214261</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>724428276426141</code></p>
-            <p>从左往右每对相邻数字相乘，每次只挪一位。首项开头算 <code>1×1、1×4、4×4、4×6</code>，依此类推。全部乘积是 <code>1、4、16、24、6、7、28、24、42、7</code>。</p>
-            <p>拼成 <code>141624672824427</code>，整串倒过来就是第二项。再算两步，第四项是 <code>4238684866664618482382214261</code>。</p>
-            <p class="note">已按验算结果修正第 3 项。原抄本中重复了一段 <code>618</code>。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q14">
+        <span class="number">14.</span>
+        <div>
+          <code class="sequence">
+            4.180.6,
+            72.55.1,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">22.162.4</span>
+            </button>,
+            54.73.3,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">40.144.2</span>
+            </button>,
+            36.91.5
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>22.162.4</code>、<code>40.144.2</code></p>
+              <p>第 1、2 项一组，第 3、4 项一组，第 5、6 项一组。每项按点号分成三段，同一组对应相加都是 <code>76、235、7</code>。</p>
+              <ul>
+                <li>用 <code>76−54、235−73、7−3</code> 得到第 3 项 <code>22.162.4</code>。</li>
+                <li>用 <code>76−36、235−91、7−5</code> 得到第 5 项 <code>40.144.2</code>。</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q14">
-          <summary>
-            <span class="card-head"><span class="number">14</span><span class="card-title">相邻两位数组求差</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">194719681, <span class="blank">?</span>, 3232515, <span class="blank">?</span>, <span class="blank">?</span>, 1120, 210, <span class="blank">?</span>, <span class="blank">?</span>, 0</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">按原注，第一空可填 <code>5152321</code></p>
-            <p>首项倒过来，拆成 <code>18 | 69 | 17 | 49 | 1</code>。相邻两位数组取差的绝对值，得到 <code>51、52、32</code>，再保留最后的 <code>1</code>，拼成 <code>5152321</code>。</p>
-            <p class="note">再用同样的方法，把 <code>5152321</code> 倒过来拆成 <code>12 | 32 | 51 | 5</code>，会得到 <code>20195</code>。它和题面的 <code>3232515</code> 对不上，后续空格待解。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q15">
+        <span class="number">15.</span>
+        <div>
+          <code class="sequence">
+            11446174671,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">724428276426141</span>
+            </button>,
+            4462184224416161861841,
+            42…82214261
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>724428276426141</code></p>
+              <p>从左往右每对相邻数字相乘，每次只挪一位。首项开头算 <code>1×1、1×4、4×4、4×6</code>，依此类推。全部乘积是 <code>1、4、16、24、6、7、28、24、42、7</code>。</p>
+              <p>拼成 <code>141624672824427</code>，整串倒过来就是第二项。再算两步，第四项是 <code>4238684866664618482382214261</code>。</p>
+              <p class="note">已按验算结果修正第 3 项。原抄本中重复了一段 <code>618</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q15">
-          <summary>
-            <span class="card-head"><span class="number">15</span><span class="card-title">四个加一的位置右移</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">67845611749914, 01011010873932, <span class="blank">?</span>, 00000001884942</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>00001011883932</code></p>
-            <p>从第 2 项起，用 <code>00000000873932</code> 当底数。在四个数位上各加 1，位置从左往右数，每一步一起右移 3 位。</p>
-            <ul>
-              <li>第 2 项在第 <code>2、4、5、7</code> 位加 1。</li>
-              <li>第 3 项移到第 <code>5、7、8、10</code> 位，得到 <code>00001011883932</code>。</li>
-              <li>第 4 项移到第 <code>8、10、11、13</code> 位，得到 <code>00000001884942</code>。</li>
-            </ul>
-            <p class="note">原注缺少从首项到第 2 项的说明。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q17">
+        <span class="number">17.</span>
+        <div>
+          <code class="sequence">
+            194719681,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">72386358</span>
+            </button>,
+            3232515,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">443111</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">00210</span>
+            </button>,
+            1120,
+            210,
+            <button class="reveal" type="button" data-blank="4" aria-label="显示第 4 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">11</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="5" aria-label="显示第 5 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">0</span>
+            </button>,
+            0
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p>把当前项倒过来读，依次求每对相邻数字的差的绝对值。每算一对只向右挪一位。</p>
+              <p><code>194719681</code> 倒读是 <code>1 8 6 9 1 7 4 9 1</code>。开头三步是 <code>|1−8|=7</code>、<code>|8−6|=2</code>、<code>|6−9|=3</code>，继续算完得到 <code>72386358</code>。</p>
+              <p><code>194719681 → 72386358 → 3232515 → 443111 → 00210 → 1120 → 210 → 11 → 0 → 0</code></p>
+              <p>中间项 <code>00210</code> 保留开头的两个零，倒读成 <code>01200</code>，才能算出 <code>1120</code>。算到 <code>11 → 0</code> 后已无相邻数字，末项按 0 保持不变处理。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="q16">
-          <summary>
-            <span class="card-head"><span class="number">16</span><span class="card-title">两位一组，求和再反转</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">71344441617191617146, 018701875878, 5131511511, <span class="blank">?</span>, <span class="blank">?</span>, <span class="blank">?</span>, 51</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>26646</code>、<code>6018</code>、<code>96</code></p>
-            <p>从左往右两位一组，最后剩一位就单独成组。每组数字相加，按顺序拼接，再把整串倒过来。</p>
-            <ul>
-              <li><code>51 | 31 | 51 | 15 | 11 → 6 | 4 | 6 | 6 | 2 → 26646</code></li>
-              <li><code>26 | 64 | 6 → 8 | 10 | 6 → 6018</code></li>
-              <li><code>60 | 18 → 6 | 9 → 96</code>，再算 <code>9+6=15</code>，倒过来正好是 <code>51</code>。</li>
-            </ul>
-            <p class="note">第 2 项已据首项修正为 <code>018701875878</code>。原抄本在 <code>018701</code> 后多了一个 <code>0</code>。</p>
-          </div>
-        </details>
-      </div>
+      <article class="puzzle" id="q18">
+        <span class="number">18.</span>
+        <div>
+          <code class="sequence">
+            67845611749914,
+            01011010873932,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">00001011883932</span>
+            </button>,
+            00000001884942
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>00001011883932</code></p>
+              <p>从第 2 项起，用 <code>00000000873932</code> 当底数。在四个数位上各加 1，位置从左往右数，每一步一起右移 3 位。</p>
+              <ul>
+                <li>第 2 项在第 <code>2、4、5、7</code> 位加 1。</li>
+                <li>第 3 项移到第 <code>5、7、8、10</code> 位，得到 <code>00001011883932</code>。</li>
+                <li>第 4 项移到第 <code>8、10、11、13</code> 位，得到 <code>00000001884942</code>。</li>
+              </ul>
+              <p class="note">原注缺少从首项到第 2 项的说明。</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="puzzle" id="q21">
+        <span class="number">21.</span>
+        <div>
+          <code class="sequence">
+            71344441617191617146,
+            018701875878,
+            5131511511,
+            <button class="reveal" type="button" data-blank="1" aria-label="显示第 1 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">26646</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="2" aria-label="显示第 2 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">6018</span>
+            </button>,
+            <button class="reveal" type="button" data-blank="3" aria-label="显示第 3 空答案" aria-expanded="false">
+              <span class="value" aria-hidden="true">96</span>
+            </button>,
+            51
+          </code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">填 <code>26646</code>、<code>6018</code>、<code>96</code></p>
+              <p>从左往右两位一组，最后剩一位就单独成组。每组数字相加，按顺序拼接，再把整串倒过来。</p>
+              <ul>
+                <li><code>51 | 31 | 51 | 15 | 11 → 6 | 4 | 6 | 6 | 2 → 26646</code></li>
+                <li><code>26 | 64 | 6 → 8 | 10 | 6 → 6018</code></li>
+                <li><code>60 | 18 → 6 | 9 → 96</code>，再算 <code>9+6=15</code>，倒过来正好是 <code>51</code>。</li>
+              </ul>
+              <p class="note">第 2 项已据首项修正为 <code>018701875878</code>。原抄本在 <code>018701</code> 后多了一个 <code>0</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
     </section>
 
-    <section id="extras" aria-labelledby="extras-title">
-      <div class="section-head">
-        <h2 id="extras-title">补充题</h2>
-        <p>沿用原清单的题号。</p>
-      </div>
-      <div class="cards">
-        <details class="puzzle" id="extra5">
-          <summary>
-            <span class="card-head"><span class="number">05</span><span class="card-title">候选解 · 乘积拼接</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">18672, 31, <span class="blank">?</span>, 64, 92250, <span class="blank">?</span>, <span class="blank">?</span>, 33</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">候选 <code>18</code>、<code>3</code>、<code>750</code></p>
-            <p>每四项一组。末项的十位乘第二项，个位乘第三项，把两个乘积拼成第一项。比如 <code>31×6=186</code>，剩下的 <code>72÷4=18</code>。第二组可以拆成 <code>9 | 2250</code>，各除以 3。</p>
-            <p class="note">如果允许填 0，<code>92250</code> 也可以拆成 <code>9225 | 0</code>，后两个空可填 <code>3075、0</code>。</p>
-          </div>
-        </details>
+    <section id="unsolved" aria-labelledby="unsolved-title">
+      <h2 id="unsolved-title">未解</h2>
+      <article class="puzzle" id="q5">
+        <span class="number">5.</span>
+        <div>
+          <code class="sequence">18672, 31, ?, 64, 92250, ?, ?, 33</code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">候选 <code>18</code>、<code>3</code>、<code>750</code></p>
+              <p>每四项一组。末项的十位乘第二项，个位乘第三项，把两个乘积拼成第一项。比如 <code>31×6=186</code>，剩下的 <code>72÷4=18</code>。第二组可以拆成 <code>9 | 2250</code>，各除以 3。</p>
+              <p class="note">如果允许填 0，<code>92250</code> 也可以拆成 <code>9225 | 0</code>，后两个空可填 <code>3075、0</code>。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="extra13">
-          <summary>
-            <span class="card-head"><span class="number">13</span><span class="card-title">已解 · 底数与指数同时变化</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">D, A, B, F, B, F, H, C, EJ, <span class="blank">?</span>, <span class="blank">?</span>, <span class="blank">?</span></code>
-          </summary>
-          <div class="solution">
-            <p class="answer">填 <code>J</code>、<code>D</code>、<code>HCJ</code></p>
-            <p>已把第二组中间的 <code>A</code> 改为 <code>B</code>。用 <code>A=0、B=1、…、J=9</code> 逐位换算，每三项一组，依次是底数、指数和结果。</p>
-            <ul>
-              <li><code>D, A, B</code> 表示 <code>3<sup>0</sup>=1</code>。</li>
-              <li><code>F, B, F</code> 表示 <code>5<sup>1</sup>=5</code>。</li>
-              <li><code>H, C, EJ</code> 表示 <code>7<sup>2</sup>=49</code>。</li>
-              <li>底数每次加 2，指数每次加 1，所以下一组是 <code>9<sup>3</sup>=729</code>，写成 <code>J, D, HCJ</code>。</li>
-            </ul>
-          </div>
-        </details>
+      <article class="puzzle" id="q16">
+        <span class="number">16.</span>
+        <div>
+          <code class="sequence">75, 32, 15, ?, ?, 33, ?, 66, ?, ?, ?, 26</code>
+        </div>
+      </article>
 
-        <article class="puzzle static" id="extra16">
-          <div class="card-head"><span class="number">16</span><span class="card-title">待解</span></div>
-          <code class="sequence">75, 32, 15, <span class="blank">?</span>, <span class="blank">?</span>, 33, <span class="blank">?</span>, 66, <span class="blank">?</span>, <span class="blank">?</span>, <span class="blank">?</span>, 26</code>
-        </article>
+      <article class="puzzle" id="q19">
+        <span class="number">19.</span>
+        <div>
+          <code class="sequence">123456789, ?, 1113151517179, 192021222324252627, ?, ?</code>
+        </div>
+      </article>
 
-        <article class="puzzle static" id="extra19">
-          <div class="card-head"><span class="number">19</span><span class="card-title">待解</span></div>
-          <code class="sequence">123456789, <span class="blank">?</span>, 1113151517179, 192021222324252627, <span class="blank">?</span>, <span class="blank">?</span></code>
-        </article>
+      <article class="puzzle" id="q20">
+        <span class="number">20.</span>
+        <div>
+          <code class="sequence">XOOOXOOOX, 45, ?, 13, OOXOXOXOO, ?, OOXXOOOXO, ?</code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">候选 <code>OXXXOOOOO</code>、<code>25</code>、<code>48</code></p>
+              <p>把 1 到 9 号位置围成一圈。两位数的个位是中心，十位是步长。中心和两侧各走这么多步的位置写 X，其余写 O。超过 9 就从 1 继续。</p>
+              <p><code>45</code> 的 X 在 <code>1、5、9</code>，符合第一项。<code>13</code> 的 X 在 <code>2、3、4</code>。<code>25</code> 对应 <code>3、5、7</code>，<code>48</code> 对应 <code>4、8、3</code>。这套规则能对上所有已知项，仍待确认是否为原题解法。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="extra20">
-          <summary>
-            <span class="card-head"><span class="number">20</span><span class="card-title">候选解 · 九格圆环</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">XOOOXOOOX, 45, <span class="blank">?</span>, 13, OOXOXOXOO, <span class="blank">?</span>, OOXXOOOXO, <span class="blank">?</span></code>
-          </summary>
-          <div class="solution">
-            <p class="answer">候选 <code>OXXXOOOOO</code>、<code>25</code>、<code>48</code></p>
-            <p>把 1 到 9 号位置围成一圈。两位数的个位是中心，十位是步长。中心和两侧各走这么多步的位置写 X，其余写 O。超过 9 就从 1 继续。</p>
-            <p><code>45</code> 的 X 在 <code>1、5、9</code>，符合第一项。<code>13</code> 的 X 在 <code>2、3、4</code>。<code>25</code> 对应 <code>3、5、7</code>，<code>48</code> 对应 <code>4、8、3</code>。这套规则能对上所有已知项，仍待确认是否为原题解法。</p>
-          </div>
-        </details>
+      <article class="puzzle" id="q22">
+        <span class="number">22.</span>
+        <div>
+          <code class="sequence">15, 90, 82, ?, 70, 32</code>
+          <details class="analysis">
+            <summary>解析</summary>
+            <div class="explanation">
+              <p class="answer">候选 <code>25</code></p>
+              <p>把十位按相邻两项配成 <code>(1, 9)、(8, ?)、(7, 3)</code>，每对之和为 10，于是空格的十位是 2。个位则按 <code>5、0、2</code> 循环，空格的个位是 5。</p>
+            </div>
+          </details>
+        </div>
+      </article>
 
-        <details class="puzzle" id="extra22">
-          <summary>
-            <span class="card-head"><span class="number">22</span><span class="card-title">候选解 · 十位和个位分开看</span><span class="chevron" aria-hidden="true"></span></span>
-            <code class="sequence">15, 90, 82, <span class="blank">?</span>, 70, 32</code>
-          </summary>
-          <div class="solution">
-            <p class="answer">候选 <code>25</code></p>
-            <p>把十位按相邻两项配成 <code>(1, 9)、(8, ?)、(7, 3)</code>，每对之和为 10，于是空格的十位是 2。个位则按 <code>5、0、2</code> 循环，空格的个位是 5。</p>
-          </div>
-        </details>
-
-        <article class="puzzle static" id="extra23">
-          <div class="card-head"><span class="number">23</span><span class="card-title">待解</span></div>
-          <code class="sequence">0, 4, 4, −1, 1, <span class="blank">?</span>, 3, 5, 4, 1, 8, 2, <span class="blank">?</span>, −6, 7, <span class="blank">?</span>, 3, 5, 3, −2, 4, 8, −4, 5, 9</code>
-        </article>
-      </div>
+      <article class="puzzle" id="q23">
+        <span class="number">23.</span>
+        <div>
+          <code class="sequence">0, 4, 4, −1, 1, ?, 3, 5, 4, 1, 8, 2, ?, −6, 7, ?, 3, 5, 3, −2, 4, 8, −4, 5, 9</code>
+        </div>
+      </article>
     </section>
-
-    <footer class="footer">
-      <span>AEGT 数列谜题集</span>
-      <a href="#top">回到顶部 ↑</a>
-    </footer>
   </main>
+  <script>
+    document.querySelector("main").addEventListener("click", (event) => {
+      const button = event.target.closest("button.reveal");
+      if (!button) return;
+
+      const reveal = button.getAttribute("aria-expanded") === "false";
+      const index = button.dataset.blank;
+      const answer = button.querySelector(".value").textContent;
+      button.setAttribute("aria-expanded", String(reveal));
+      button.setAttribute("aria-label", reveal
+        ? `第 ${index} 空答案为 ${answer}，点击隐藏`
+        : `显示第 ${index} 空答案`);
+    });
+  </script>
 </body>
 </html>

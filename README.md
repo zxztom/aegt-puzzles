@@ -1,6 +1,6 @@
 # AEGT 数列谜题集
 
-收录常规题与补充题。点开题目卡片可查看答案和逐步验算，补充题保留原编号。
+题目按原编号列为已解和未解。点击已解题的空位可显示答案，点击「解析」可展开验算。
 
 [页面源码](index.html) · [GitHub Pages 网页地址](https://zxztom.github.io/aegt-puzzles/)（启用 Pages 后可访问）
 
