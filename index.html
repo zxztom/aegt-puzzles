@@ -623,14 +623,6 @@
         <span class="number">5.</span>
         <div>
           <code class="sequence">18672, 31, ?, 64, 92250, ?, ?, 33</code>
-          <details class="analysis">
-            <summary>解析</summary>
-            <div class="explanation">
-              <p class="answer">候选 <code>18</code>、<code>3</code>、<code>750</code></p>
-              <p>每四项一组。末项的十位乘第二项，个位乘第三项，把两个乘积拼成第一项。比如 <code>31×6=186</code>，剩下的 <code>72÷4=18</code>。第二组可以拆成 <code>9 | 2250</code>，各除以 3。</p>
-              <p class="note">如果允许填 0，<code>92250</code> 也可以拆成 <code>9225 | 0</code>，后两个空可填 <code>3075、0</code>。</p>
-            </div>
-          </details>
         </div>
       </article>
 
@@ -652,14 +644,6 @@
         <span class="number">20.</span>
         <div>
           <code class="sequence">XOOOXOOOX, 45, ?, 13, OOXOXOXOO, ?, OOXXOOOXO, ?</code>
-          <details class="analysis">
-            <summary>解析</summary>
-            <div class="explanation">
-              <p class="answer">候选 <code>OXXXOOOOO</code>、<code>25</code>、<code>48</code></p>
-              <p>把 1 到 9 号位置围成一圈。两位数的个位是中心，十位是步长。中心和两侧各走这么多步的位置写 X，其余写 O。超过 9 就从 1 继续。</p>
-              <p><code>45</code> 的 X 在 <code>1、5、9</code>，符合第一项。<code>13</code> 的 X 在 <code>2、3、4</code>。<code>25</code> 对应 <code>3、5、7</code>，<code>48</code> 对应 <code>4、8、3</code>。这套规则能对上所有已知项，仍待确认是否为原题解法。</p>
-            </div>
-          </details>
         </div>
       </article>
 
@@ -667,13 +651,6 @@
         <span class="number">22.</span>
         <div>
           <code class="sequence">15, 90, 82, ?, 70, 32</code>
-          <details class="analysis">
-            <summary>解析</summary>
-            <div class="explanation">
-              <p class="answer">候选 <code>25</code></p>
-              <p>把十位按相邻两项配成 <code>(1, 9)、(8, ?)、(7, 3)</code>，每对之和为 10，于是空格的十位是 2。个位则按 <code>5、0、2</code> 循环，空格的个位是 5。</p>
-            </div>
-          </details>
         </div>
       </article>
 
